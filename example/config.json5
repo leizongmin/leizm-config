@@ -1,0 +1,8 @@
+{
+  // 这里是备注信息
+  global: {
+    default: 123
+  },
+  default: 456,
+  $fuck: 123
+}

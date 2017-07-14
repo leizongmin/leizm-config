@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+
+const colors = require('colors');
+const config = require('../lib');
+
+const argv = process.argv.slice(2);
+const cmd = argv[0];
+
+function main() {
+  switch (String(cmd).toLowerCase()) {
+  case 'load':
+    cmdLoad();
+    break;
+  case 'check':
+    cmdCheck();
+    break;
+  case 'help':
+    cmdHelp();
+    break;
+  default:
+    cmdUnkonwn();
+  }
+}
+main();
+
+function cmdLoad() {
+  console.log(jsonStringify(config.all(), 2));
+}
+
+function cmdCheck() {
+  config.preCheckFromEnv.apply(config, argv.slice(1));
+  console.log('OK.');
+}
+
+function cmdHelp() {
+  console.log('--------------------------------------------------');
+  console.log('使用方法:');
+  console.log('  config-loader help          显示帮助信息');
+  console.log('  config-loader load          打印载入的配置信息');
+  console.log('  config-loader check <env>   根据给定的环境文件，检查当前是否有缺失的配置项');
+  console.log('--------------------------------------------------');
+}
+
+function cmdUnkonwn() {
+  console.log(colors.red('未知命令"%s"'), cmd);
+  cmdHelp();
+}
+
+function jsonStringify(data, space) {
+  const seen = [];
+  return JSON.stringify(data, function (key, val) {
+    if (!val || typeof val !== 'object') {
+      return val;
+    }
+    if (seen.indexOf(val) !== -1) {
+      return '[Circular]';
+    }
+    seen.push(val);
+    return val;
+  }, space);
+}
