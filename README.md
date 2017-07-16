@@ -88,17 +88,45 @@ config.has('obj.xxx');
 
 为了避免进程因为使用到了不存在的配置项而导致进程意外退出，建议：
 
-+ ``
-+ 启动服务前，使用 `config-loader check` 命令检查配置文件是否正确，或者在 `pckage.json` 中设置 `check-config` 的脚本：
++ 配置文件 `config/_development.yaml` 存放本地开发环境所需要的所有配置项
++ 配置文件 `config/development.yaml` 存放不同开发机器在本地开发环境有差异的配置项
++ 启动服务前，使用 `config-loader check _development` 命令以 `_development` 配置文件为基准检查配置文件是否正确，或者在 `pckage.json` 中设置 `check-config` 的脚本：
 
 ```json
 {
   "scripts": {
     "check-config": "config-loader check _development",
-    "start": "npm run check-config && node src/app.js"
+    "start": "npm run check-config && node src/app.js",
+    "deploy-production": "NODE_ENV=production && npm run check-config && pm2 restart src/app.js --name Your-Service"
   }
 }
 ```
 
+这样，如果在启动服务器时检查到缺失的配置项即可立即得到相应的反馈信息，而不会继续执行重启服务。
 
 
+## License
+
+```
+MIT License
+
+Copyright (c) 2017 Zongmin Lei <leizongmin@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
