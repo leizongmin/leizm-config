@@ -1,6 +1,6 @@
 {
-  "name": "@leizm/config-loader",
-  "version": "0.0.0",
+  "name": "@leizm/config",
+  "version": "1.0.0",
   "description": "Node.js 项目配置文件加载器 Config Loader for Node.js Project",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leizongmin/leizm-config-loader.git"
+    "url": "git+https://github.com/leizongmin/leizm-config.git"
   },
   "keywords": [
     "config",
@@ -22,9 +22,9 @@
   "author": "Zongmin Lei <leizongmin@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leizongmin/leizm-config-loader/issues"
+    "url": "https://github.com/leizongmin/leizm-config/issues"
   },
-  "homepage": "https://github.com/leizongmin/leizm-config-loader#readme",
+  "homepage": "https://github.com/leizongmin/leizm-config#readme",
   "dependencies": {
     "colors": "^1.1.2",
     "js-yaml": "^3.9.0",

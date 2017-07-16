@@ -1,10 +1,10 @@
-# @leizm/config-loader
+# @leizm/config
 Node.js 项目配置文件加载器 Config Loader for Node.js Project
 
 ## 安装
 
 ```bash
-$ npm install @leizm/config-loader --save
+$ npm install @leizm/config --save
 ```
 
 ## 使用
@@ -59,10 +59,10 @@ obj:
   c: 789
 ```
 
-在任何需要用到配置的 JavaScript **文件顶部** 载入 `@leizm/config-loader` 来获取配置，比如：
+在任何需要用到配置的 JavaScript **文件顶部** 载入 `@leizm/config` 来获取配置，比如：
 
 ```javascript
-const config = require('@leizm/config-loader');
+const config = require('@leizm/config');
 
 // 获取配置
 config.get('obj');
