@@ -9,6 +9,11 @@ export function get(name: string): any;
 export function has(name: string): boolean;
 
 /**
+ * 如果指定配置项 存在则获取，否则返回默认值
+ */
+export function getOrDefault(name: string, value: any): any;
+
+/**
  * 检查指定配置项是否存在，如果不存在则抛出异常
  */
 export function check(name: string): void;
