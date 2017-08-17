@@ -6,6 +6,7 @@
 
 import 'source-map-support/register';
 import * as colors from 'colors';
+import { Config } from './';
 
 const argv = process.argv.slice(2);
 const cmd = argv[0];
@@ -32,12 +33,12 @@ function main(): void {
 main();
 
 function cmdLoad(): void {
-  const config = require('../').default;
+  const config = new Config().load();
   console.log(jsonStringify(config.all(), 2));
 }
 
 function cmdCheck(): void {
-  const config = require('../').default;
+  const config = new Config().load();
   config.preCheckFromEnv.apply(config, argv.slice(1));
   console.log('OK.');
 }

@@ -1,8 +1,8 @@
 'use strict';
 
-require('source-map-support/register');
-const config = require('../').default;
+import { Config } from '../lib';
 
+const config = new Config();
 console.log(config);
 
 config.preCheckFromEnv('a', 'b');

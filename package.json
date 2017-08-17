@@ -1,12 +1,11 @@
 {
   "name": "@leizm/config",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Node.js 项目配置文件加载器 Config Loader for Node.js Project",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/lib/index.js",
+  "typings": "dist/lib/index.d.ts",
   "files": [
-    "custom.js",
-    "dist",
+    "dist/lib",
     "bin"
   ],
   "scripts": {

@@ -62,7 +62,10 @@ obj:
 在任何需要用到配置的 JavaScript **文件顶部** 载入 `@leizm/config` 来获取配置，比如：
 
 ```typescript
-import config from '@leizm/config';
+import { Config } from '@leizm/config';
+
+// 创建实例
+const config = new Config();
 
 // 获取配置
 config.get('obj');
