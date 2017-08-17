@@ -1,7 +1,8 @@
 'use strict';
 
 require('source-map-support/register');
-const config = require('../').default;
+const Config = require('../custom').Config;
+const config = new Config().load();
 
 console.log(config);
 
