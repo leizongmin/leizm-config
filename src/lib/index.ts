@@ -80,8 +80,8 @@ export function parseYAML(file: string, prefix: string, data: string): any {
  */
 export function resolveConfigFile(name: string): string {
   const exts = [ '.json5', '.json', '.yaml', '.yml' ];
-  for (let i = 0; i < exts.length; i++) {
-    const f = `${ name }${ exts[i] }`;
+  for (const ext of exts) {
+    const f = `${ name }${ ext }`;
     if (fs.existsSync(f)) {
       return f;
     }
