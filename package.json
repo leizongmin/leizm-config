@@ -39,7 +39,7 @@
     "js-yaml": "^3.9.0",
     "json5": "^0.5.1",
     "lei-ns": "^0.4.1",
-    "source-map-support": "^0.4.16"
+    "source-map-support": "^0.5.0"
   },
   "devDependencies": {
     "tslint": "^5.6.0",
