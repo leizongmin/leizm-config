@@ -1,4 +1,6 @@
 # @leizm/config
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/leizongmin/leizm-config.svg)](https://greenkeeper.io/)
 Node.js 项目配置文件加载器 Config Loader for Node.js Project
 
 ## 安装
