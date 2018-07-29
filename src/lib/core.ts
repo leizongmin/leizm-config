@@ -8,23 +8,34 @@ import * as fs from "fs";
 import * as path from "path";
 import * as json5 from "json5";
 import * as yaml from "js-yaml";
+import * as colors from "colors";
 const createNamespace = require("lei-ns").create;
+
+export class LoadConfigError extends Error {
+  constructor(message: string) {
+    super(colors.cyan("@leizm/config: ") + colors.red(message));
+  }
+}
 
 /**
  * 读取配置文件
  *
  * @param file 文件名
  * @param prefix 描述
+ * @param ignoreNotExists 如果文件不存在则忽略
  */
-export function readConfigFile(file: string, prefix: string): any {
+export function readConfigFile(file: string, prefix: string, ignoreNotExists = false): any {
   if (!fs.existsSync(file)) {
-    throw new Error(`${prefix} 配置文件 ${file} 不存在！`);
+    if (!ignoreNotExists) {
+      throw new LoadConfigError(`${prefix} 配置文件 ${file} 不存在！`);
+    }
+    return {};
   }
   let data = "";
   try {
     data = fs.readFileSync(file).toString();
   } catch (err) {
-    throw new Error(`无法读取 ${prefix} 配置文件 ${file}！${err}`);
+    throw new LoadConfigError(`无法读取 ${prefix} 配置文件 ${file}！${err}`);
   }
   const ext = path.extname(file);
   switch (ext) {
@@ -35,7 +46,7 @@ export function readConfigFile(file: string, prefix: string): any {
     case ".yml":
       return parseYAML(file, prefix, data);
     default:
-      throw new Error(`不支持的配置文件格式：${ext}`);
+      throw new LoadConfigError(`不支持的配置文件格式：${ext}`);
   }
 }
 
@@ -52,7 +63,7 @@ export function parseJSON5(file: string, prefix: string, data: string): any {
   } catch (err) {
     const position = `第 ${err.lineNumber} 行第 ${err.columnNumber} 列`;
     const msg = `${prefix} 配置文件 ${file} 格式不正确！(${position})\n\n${err}\n`;
-    throw new Error(msg);
+    throw new LoadConfigError(msg);
   }
 }
 
@@ -69,7 +80,7 @@ export function parseYAML(file: string, prefix: string, data: string): any {
   } catch (err) {
     const position = `第 ${err.mark.line} 行第 ${err.mark.column} 列`;
     const msg = `${prefix} 配置文件 ${file} 格式不正确！(${position})\n\n${err}\n`;
-    throw new Error(msg);
+    throw new LoadConfigError(msg);
   }
 }
 
@@ -116,12 +127,12 @@ export class Config {
       .map(s => s.trim())
       .filter(s => s);
     this.configDir = path.resolve(this.projectDir, "config");
-    this.defaultConfigFile = resolveConfigFile(path.resolve(this.projectDir, "config"));
+    this.defaultConfigFile = resolveConfigFile(path.resolve(this.projectDir, "config/_default"));
   }
 
   public get ns() {
     if (!this._ns) {
-      throw new Error(`请先调用 Config.load() 载入配置文件`);
+      throw new LoadConfigError(`请先调用 Config.load() 载入配置文件`);
     }
     return this._ns;
   }
@@ -131,9 +142,9 @@ export class Config {
    */
   public load(): Config {
     if (this.envs.length < 1) {
-      throw new Error(`请使用环境变量 NODE_ENV=xxx 指定配置名！`);
+      throw new LoadConfigError(`请使用环境变量 NODE_ENV=xxx 指定配置名！`);
     }
-    this.defaultConfig = readConfigFile(this.defaultConfigFile, "默认");
+    this.defaultConfig = readConfigFile(this.defaultConfigFile, "默认", true);
     this.files.push(this.defaultConfig);
     this._ns = createNamespace(this.defaultConfig);
     for (const name of this.envs) {
@@ -211,7 +222,7 @@ export class Config {
       }
     }
     if (missingList.length > 0) {
-      throw new Error(
+      throw new LoadConfigError(
         `根据环境 ${envs.join(", ")} 检查，当前缺少以下配置项（未定义或其值为 undefined）:\n\n${missingList
           .map(s => `  ${s}`)
           .join("\n")}`.trim(),
