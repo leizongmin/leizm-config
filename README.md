@@ -1,17 +1,18 @@
 # @leizm/config
+
 Node.js 项目配置文件加载器 Config Loader for Node.js Project
 
 ## 安装
 
 ```bash
-$ npm install @leizm/config --save
+npm install @leizm/config --save
 ```
 
 ## 使用
 
 配置文件支持的后缀格式有 `.yaml`、`.yml`、`.json5`、`.json`（本文档以 `.yaml` 为例）。一般文件结构如下：
 
-```
+```text
 .
 ├── config                   各环境配置目录
 │   ├── _development.yaml    开发环境配置文件
@@ -36,6 +37,7 @@ $ npm install @leizm/config --save
 如果配置项有冲突，则后加载的会覆盖前加载的配置项，比如：
 
 文件 `_development.yaml`：
+
 ```yaml
 obj:
   a: 123
@@ -107,13 +109,12 @@ config.has('obj.xxx');
 
 这样，如果在启动服务器时检查到缺失的配置项即可立即得到相应的反馈信息，而不会继续执行重启服务。
 
-
 ## License
 
-```
+```text
 MIT License
 
-Copyright (c) 2017 Zongmin Lei <leizongmin@gmail.com>
+Copyright (c) 2017-2018 Zongmin Lei <leizongmin@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
