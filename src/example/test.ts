@@ -5,6 +5,7 @@ import { Config } from '../lib';
 const config = new Config();
 console.log(config);
 
+config.load();
 config.preCheckFromEnv('a', 'b');
 
 console.log(config.get('global'));
