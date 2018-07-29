@@ -4,9 +4,9 @@
  * @author Zongmin Lei <leizongmin@gmail.com>
  */
 
-import 'source-map-support/register';
-import * as colors from 'colors';
-import { Config } from './';
+import "source-map-support/register";
+import * as colors from "colors";
+import { Config } from "./core";
 
 const argv = process.argv.slice(2);
 const cmd = argv[0];
@@ -14,13 +14,13 @@ const cmd = argv[0];
 function main(): void {
   try {
     switch (String(cmd).toLowerCase()) {
-      case 'load':
+      case "load":
         cmdLoad();
         break;
-      case 'check':
+      case "check":
         cmdCheck();
         break;
-      case 'help':
+      case "help":
         cmdHelp();
         break;
       default:
@@ -40,16 +40,16 @@ function cmdLoad(): void {
 function cmdCheck(): void {
   const config = new Config().load();
   config.preCheckFromEnv.apply(config, argv.slice(1));
-  console.log('OK.');
+  console.log("OK.");
 }
 
 function cmdHelp(): void {
-  console.log('--------------------------------------------------');
-  console.log('使用方法:');
-  console.log('  config-loader help          显示帮助信息');
-  console.log('  config-loader load          打印载入的配置信息');
-  console.log('  config-loader check <env>   根据给定的环境文件，检查当前是否有缺失的配置项');
-  console.log('--------------------------------------------------');
+  console.log("--------------------------------------------------");
+  console.log("使用方法:");
+  console.log("  config-loader help          显示帮助信息");
+  console.log("  config-loader load          打印载入的配置信息");
+  console.log("  config-loader check <env>   根据给定的环境文件，检查当前是否有缺失的配置项");
+  console.log("--------------------------------------------------");
 }
 
 function cmdUnkonwn(): void {
@@ -61,14 +61,18 @@ function cmdUnkonwn(): void {
 
 function jsonStringify(data: any, space: number): string {
   const seen: any[] = [];
-  return JSON.stringify(data, function (key, val) {
-    if (!val || typeof val !== 'object') {
+  return JSON.stringify(
+    data,
+    function(key, val) {
+      if (!val || typeof val !== "object") {
+        return val;
+      }
+      if (seen.indexOf(val) !== -1) {
+        return "[Circular]";
+      }
+      seen.push(val);
       return val;
-    }
-    if (seen.indexOf(val) !== -1) {
-      return '[Circular]';
-    }
-    seen.push(val);
-    return val;
-  }, space);
+    },
+    space,
+  );
 }

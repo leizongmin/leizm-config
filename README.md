@@ -15,25 +15,29 @@ npm install @leizm/config --save
 ```text
 .
 ├── config                   各环境配置目录
+│   ├── _default.yaml        默认配置文件（文件后缀可以为支持的任意后缀，下同）
 │   ├── _development.yaml    开发环境配置文件
 │   ├── development.yaml     开发环境配置文件 *
 │   ├── production.yaml      production环境配置文件 *
 │   ├── beta.yaml            beta环境配置文件 *
 │   └── test.yaml            test环境配置文件 *
-├── config.yaml              默认配置文件
 ├── node_modules             依赖模块目录
 └── src                      项目源码目录
 ```
 
-说明：说明后面带有 `*` 的文件不加入代码版本库中。`.gitignore` 文件可以加入以下规则：
+说明：说明后面带有 `*` 的文件不加入代码版本库中。`.gitignore` 文件可以加入以下规则（忽略 `config` 目录下所有非下划线 `_` 开头的文件）：
 
 ```.gitignore
 /config/*.*
 !/config/_*.*
 ```
 
-启动项目时，通过 `NODE_ENV` 环境变量来指定当前的执行环境，支持多个环境名称（是用逗号分隔），比如：`NODE_ENV=_development,development` 表示
-首先加载 `config.yaml`（无论指定什么环境名称，都会首先加载此默认配置文件），再加载 `config/_development.yaml`，最后加载 `config/development.yaml`。
+启动项目时，通过 `NODE_ENV` 环境变量来指定当前的执行环境，支持多个环境名称（是用逗号分隔），比如：`NODE_ENV=_development,development` 表示：
+
+* 首先加载 `config/_default.yaml`（无论指定什么环境名称，如果此文件存在，都会首先加载此默认配置文件）
+* 再加载 `config/_development.yaml`
+* 最后加载 `config/development.yaml`。
+
 如果配置项有冲突，则后加载的会覆盖前加载的配置项，比如：
 
 文件 `_development.yaml`：
@@ -61,13 +65,10 @@ obj:
   c: 789
 ```
 
-在任何需要用到配置的 JavaScript **文件顶部** 载入 `@leizm/config` 来获取配置，比如：
+在任何需要用到配置的 **文件顶部** 载入 `@leizm/config` 来获取配置，比如：
 
 ```typescript
-import { Config } from '@leizm/config';
-
-// 创建实例
-const config = new Config();
+import config from '@leizm/config';
 
 // 获取配置
 config.get('obj');
@@ -93,9 +94,9 @@ config.has('obj.xxx');
 
 为了避免进程因为使用到了不存在的配置项而导致进程意外退出，建议：
 
-+ 配置文件 `config/_development.yaml` 存放本地开发环境所需要的所有配置项
-+ 配置文件 `config/development.yaml` 存放不同开发机器在本地开发环境有差异的配置项
-+ 启动服务前，使用 `config-loader check _development` 命令以 `_development` 配置文件为基准检查配置文件是否正确，或者在 `pckage.json` 中设置 `check-config` 的脚本：
+* 配置文件 `config/_development.yaml` 存放本地开发环境所需要的所有配置项
+* 配置文件 `config/development.yaml` 存放不同开发机器在本地开发环境有差异的配置项
+* 启动服务前，使用 `config-loader check _development` 命令以 `_development` 配置文件为基准检查配置文件是否正确，或者在 `pckage.json` 中设置 `check-config` 的脚本：
 
 ```json
 {
