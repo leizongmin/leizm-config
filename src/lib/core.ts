@@ -10,6 +10,7 @@ import * as json5 from "json5";
 import * as yaml from "js-yaml";
 import * as colors from "colors";
 const createNamespace = require("lei-ns").create;
+const toml = require("toml");
 
 export class LoadConfigError extends Error {
   constructor(message: string) {
@@ -45,6 +46,8 @@ export function readConfigFile(file: string, prefix: string, ignoreNotExists = f
     case ".yaml":
     case ".yml":
       return parseYAML(file, prefix, data);
+    case ".toml":
+      return parseToml(file, prefix, data);
     default:
       throw new LoadConfigError(`不支持的配置文件格式：${ext}`);
   }
@@ -85,12 +88,29 @@ export function parseYAML(file: string, prefix: string, data: string): any {
 }
 
 /**
+ * 解析 toml
+ *
+ * @param file 文件名
+ * @param prefix 描述
+ * @param data 要解析的数据
+ */
+export function parseToml(file: string, prefix: string, data: string): any {
+  try {
+    return toml.parse(data);
+  } catch (err) {
+    const position = `第 ${err.mark.line} 行第 ${err.mark.column} 列`;
+    const msg = `${prefix} 配置文件 ${file} 格式不正确！(${position})\n\n${err}\n`;
+    throw new LoadConfigError(msg);
+  }
+}
+
+/**
  * 获取指定名称的配置文件完整路径，文件后缀优先级： .json5 > .yaml > .js
  *
  * @param name 配置名称（文件路径，不包含后缀）
  */
 export function resolveConfigFile(name: string): string {
-  const exts = [".json5", ".json", ".yaml", ".yml"];
+  const exts = [".json5", ".json", ".yaml", ".yml", ".toml"];
   for (const ext of exts) {
     const f = `${name}${ext}`;
     if (fs.existsSync(f)) {

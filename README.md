@@ -10,7 +10,7 @@ npm install @leizm/config --save
 
 ## 使用
 
-配置文件支持的后缀格式有 `.yaml`、`.yml`、`.json5`、`.json`（本文档以 `.yaml` 为例）。一般文件结构如下：
+配置文件支持的后缀格式有 `.yaml`、`.yml`、`.json5`、`.json`, `.toml`（本文档以 `.yaml` 为例）。一般文件结构如下：
 
 ```text
 .

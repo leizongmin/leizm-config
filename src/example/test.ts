@@ -1,6 +1,7 @@
-import config from '../lib';
+import config from "../lib";
 
 config.load();
+console.log(config.all());
 config.preCheckFromEnv("a", "b");
 
 console.log(config.get("global"));
