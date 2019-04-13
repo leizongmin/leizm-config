@@ -4,7 +4,6 @@
  * @author Zongmin Lei <leizongmin@gmail.com>
  */
 
-import "source-map-support/register";
 import * as colors from "colors";
 import { Config } from "./core";
 

@@ -35,7 +35,6 @@
     "js-yaml": "^3.13.1",
     "json5": "^2.1.0",
     "lei-ns": "^0.4.1",
-    "source-map-support": "^0.5.12",
     "toml": "^3.0.0"
   },
   "devDependencies": {
